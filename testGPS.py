@@ -6,11 +6,11 @@ from ublox_gps import UbloxGps
 port = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
 gps = UbloxGps(port)
 
-broker = 'a5f3481784434027b18630476bc1b277.s2.eu.hivemq.cloud'
-port = 8883
+broker = 'test.mosquitto.org'
+port = 1883
 client_id = f'amantronic-01'
-username = 'amantronic'
-password = 'amantronic@1234'
+#username = 'amantronic'
+#password = 'amantronic@1234'
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):

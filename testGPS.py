@@ -49,6 +49,11 @@ def getGPS():
                 #print("Heading of Motion: ", geo.headMot)
                 
                 gps_time = gps.date_time()
+                GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
+                UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
+                publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
+                publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
+                
                 #print("{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year))
                 #print("UTC Time {}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec))
                 #print("Valid date:{}\nValid Time:{}".format(gps_time.valid.validDate, gps_time.valid.validTime))

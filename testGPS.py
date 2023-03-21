@@ -87,7 +87,7 @@ def getGPS():
                 
                 Dataset = [Longitude,Latitude,HeadingOfMotion,GPS_Time,UTC_Time,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
                 
-                if StartLog = '1':
+                if StartLog == '1':
                     with open(LogFilename, 'a') as f:
                         f.write(','.join(Dataset))
                         f.write('\n')

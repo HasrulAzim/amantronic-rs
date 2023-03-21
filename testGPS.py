@@ -12,8 +12,8 @@ client_id = f'amantronic-01'
 #username = 'amantronic'
 #password = 'amantronic@1234'
 
-StartLog = '0'
-LogFilename = ''
+StartLog = '1'
+LogFilename = 'testFile'
 BrokerConnected = False
 
 
@@ -89,9 +89,10 @@ def getGPS():
                 publish(client,'/visi/amantronic/rs/veh/accPitch',veh.accPitch)
                 publish(client,'/visi/amantronic/rs/veh/accHeading',veh.accHeading)
                 
-                Dataset = [Longitude,Latitude,HeadingOfMotion,GPS_Time,UTC_Time,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
+                Dataset = [GPS_Time,UTC_Time,Longitude,Latitude,HeadingOfMotion,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
                 
                 if StartLog == '1':
+                    print("Writing to log file "+LogFilename+".txt")
                     with open(LogFilename, 'a') as f:
                         f.write(','.join(Dataset))
                         f.write('\n')

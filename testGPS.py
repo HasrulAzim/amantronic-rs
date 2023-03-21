@@ -12,7 +12,7 @@ client_id = f'amantronic-01'
 #username = 'amantronic'
 #password = 'amantronic@1234'
 
-StartLog = '0'
+StartLog = False
 LogFilename = "/home/amantronic/testFile.txt"
 BrokerConnected = False
 
@@ -29,6 +29,10 @@ def on_message(client, userdata, message):
     print("message topic=",message.topic)
     if message.topic == "/visi/amantronic/rs/command/startLog":
         StartLog = str(message.payload.decode("utf-8"))
+        if StartLog == "1":
+            print("YRAHH")
+        else
+            print("NAAAH")    
         print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":
         LogFilename = "/home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
@@ -91,7 +95,7 @@ def getGPS():
                 
                 Dataset = [GPS_Time,UTC_Time,Longitude,Latitude,HeadingOfMotion,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
                 
-                if StartLog == '1':
+                if StartLog == True:
                     print("Writing to log file "+LogFilename+".txt")
                     with open(LogFilename, 'a') as f:
                         f.write(','.join(Dataset))

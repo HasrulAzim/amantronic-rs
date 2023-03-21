@@ -105,5 +105,5 @@ def getGPS():
 if __name__ == '__main__':
     print("Connecting to MQTT Broker '{broker}'")
     client = connect_mqtt()
-    client.loop_start
+    client.loop_forever
     getGPS()

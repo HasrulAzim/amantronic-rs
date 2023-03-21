@@ -31,7 +31,7 @@ def on_message(client, userdata, message):
         StartLog = str(message.payload.decode("utf-8"))
         if StartLog == "1":
             print("YRAHH")
-        else
+        else:
             print("NAAAH")    
         print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":

@@ -29,7 +29,11 @@ def on_message(client, userdata, message):
     print("message topic=",message.topic)
     if message.topic == "/visi/amantronic/rs/command/startLog":
         StartLog = str(message.payload.decode("utf-8")) 
-        print(StartLog)
+        if StartLog == '1':
+            print("Start Logging")
+        else:
+            print("Stop Log")
+        #print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":
         LogFilename = "/home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
         print(LogFilename)

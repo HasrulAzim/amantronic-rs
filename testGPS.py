@@ -64,9 +64,9 @@ def getGPS():
                 geo = gps.geo_coords()
                 gps_time = gps.date_time()
                 veh = gps.veh_attitude()
-                Longitude = geo.lon
-                Latitude = geo.lat
-                HeadingOfMotion = geo.headMot
+                Longitude = str(geo.lon)
+                Latitude = str(geo.lat)
+                HeadingOfMotion = str(geo.headMot)
                 publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
                 publish(client,'/visi/amantronic/rs/geo/lat',geo.lat)
                 publish(client,'/visi/amantronic/rs/geo/headMot',geo.headMot)
@@ -76,12 +76,12 @@ def getGPS():
                 publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
                 publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
                 
-                Roll = veh.roll
-                Pitch = veh.pitch
-                Heading = veh.heading
-                AccRoll = veh.accRoll
-                AccPitch = veh.accPitch
-                AccHeading = veh.accHeading
+                Roll = str(veh.roll)
+                Pitch = str(veh.pitch)
+                Heading = str(veh.heading)
+                AccRoll = str(veh.accRoll)
+                AccPitch = str(veh.accPitch)
+                AccHeading = str(veh.accHeading)
                 publish(client,'/visi/amantronic/rs/veh/roll',veh.roll)
                 publish(client,'/visi/amantronic/rs/veh/pitch',veh.pitch)
                 publish(client,'/visi/amantronic/rs/veh/heading',veh.heading)

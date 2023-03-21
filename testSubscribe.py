@@ -1,17 +1,26 @@
-import serial
+import paho.mqtt.client as mqtt #import the client1
+import time
+############
+def on_message(client, userdata, message):
+    print("message received " ,str(message.payload.decode("utf-8")))
+    print("message topic=",message.topic)
+    print("message qos=",message.qos)
+    print("message retain flag=",message.retain)
+########################################
+broker_address="test.mosquitto.org"
 
-from paho.mqtt import client as mqtt_client
-from ublox_gps import UbloxGps
+print("creating new instance")
+client = mqtt.Client("P1") #create new instance
+client.on_message=on_message #attach function to callback
 
-port = serial.Serial('/dev/serial0', baudrate=9600, timeout=1)
-gps = UbloxGps(port)
+print("connecting to broker")
+client.connect(broker_address) #connect to broker
+client.loop_start() #start the loop
 
-broker = 'test.mosquitto.org'
-port = 1883
-client_id = f'amantronic-01'
-#username = 'amantronic'
-#password = 'amantronic@1234'
+print("Subscribing to topic","/visi/amantronic/rs/command/filename")
+client.subscribe("/visi/amantronic/rs/command/filename")
 
-StartLog = '0'
-LogFilename = ''
-BrokerConnected = False
+print("Publishing message to topic","house/bulbs/bulb1")
+client.publish("house/bulbs/bulb1","OFF")
+time.sleep(4) # wait
+client.loop_stop() #stop the loop

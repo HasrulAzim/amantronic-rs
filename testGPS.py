@@ -13,7 +13,7 @@ client_id = f'amantronic-01'
 #password = 'amantronic@1234'
 
 StartLog = '1'
-LogFilename = 'testFile'
+LogFilename = "/home/amantronic/testFile.txt"
 BrokerConnected = False
 
 
@@ -31,7 +31,7 @@ def on_message(client, userdata, message):
         StartLog = str(message.payload.decode("utf-8"))
         print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":
-        LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
+        LogFilename = "/home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
         print(LogFilename)
     
 def connect_mqtt():

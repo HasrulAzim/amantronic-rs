@@ -15,6 +15,21 @@ client_id = f'amantronic-01'
 StartLog = '0'
 LogFilename = ''
 
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT Broker!")
+    else:
+        print("Failed to connect, return code %d\n", rc)
+        
+def on_message(client, userdata, message):
+    print("message topic=",message.topic)
+    if message.topic == "/visi/amantronic/rs/command/startLog":
+        StartLog = str(message.payload.decode("utf-8"))
+        print(StartLog)
+    elif message.topic == "/visi/amantronic/rs/command/filename":
+        LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
+        print(LogFilename)
+        
 def connect_mqtt():
     
     # Set Connecting Client ID
@@ -28,20 +43,9 @@ def connect_mqtt():
     client.subscribe("/visi/amantronic/rs/command/filename")
     return client
 
-def on_connect(client, userdata, flags, rc):
-    if rc == 0:
-        print("Connected to MQTT Broker!")
-    else:
-        print("Failed to connect, return code %d\n", rc)
+
             
-def on_message(client, userdata, message):
-    print("message topic=",message.topic)
-    if message.topic == "/visi/amantronic/rs/command/startLog":
-        StartLog = str(message.payload.decode("utf-8"))
-        print(StartLog)
-    elif message.topic == "/visi/amantronic/rs/command/filename":
-        LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
-        print(LogFilename)
+
         
 def publish(client, topic, msg):
     result = client.publish(topic, msg)

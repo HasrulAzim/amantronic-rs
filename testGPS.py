@@ -42,9 +42,9 @@ def connect_mqtt():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker, port)
+    client.loop_start
     client.subscribe("/visi/amantronic/rs/command/startLog")
     client.subscribe("/visi/amantronic/rs/command/filename")
-    client.loop_start
     return client
         
 def publish(client, topic, msg):

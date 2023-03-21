@@ -12,19 +12,35 @@ client_id = f'amantronic-01'
 #username = 'amantronic'
 #password = 'amantronic@1234'
 
+StartLog = '0'
+LogFilename = ''
+
 def connect_mqtt():
-    def on_connect(client, userdata, flags, rc):
-        if rc == 0:
-            print("Connected to MQTT Broker!")
-        else:
-            print("Failed to connect, return code %d\n", rc)
+    
     # Set Connecting Client ID
     client = mqtt_client.Client(client_id)
  #   client.username_pw_set(username, password)
     client.on_connect = on_connect
+    client.on_message = on_message
     client.connect(broker, port)
+    client.loop_start
+    client.subscribe("/visi/amantronic/rs/command/startLog")
+    client.subscribe("/visi/amantronic/rs/command/filename")
     return client
 
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT Broker!")
+    else:
+        print("Failed to connect, return code %d\n", rc)
+            
+def on_message(client, userdata, message):
+    print("message topic=",message.topic)
+    if message.topic == "/visi/amantronic/rs/command/startLog":
+        StartLog = str(message.payload.decode("utf-8"))
+    elif message.topic == "/visi/amantronic/rs/command/filename":
+        LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
+        
 def publish(client, topic, msg):
     result = client.publish(topic, msg)
     status = result[0]
@@ -35,7 +51,6 @@ def publish(client, topic, msg):
     return result
 
 def getGPS():
-
     try:
         print("Listening for UBX Messages")
         while True:
@@ -43,25 +58,24 @@ def getGPS():
                 geo = gps.geo_coords()
                 gps_time = gps.date_time()
                 veh = gps.veh_attitude()
-                
+                Longitude = geo.lon
+                Latitude = geo.lat
+                HeadingOfMotion = geo.headMot
                 publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
                 publish(client,'/visi/amantronic/rs/geo/lat',geo.lat)
                 publish(client,'/visi/amantronic/rs/geo/headMot',geo.headMot)
-                #print("Longitude: ", geo.lon) 
-                #print("Latitude: ", geo.lat)
-                #print("Heading of Motion: ", geo.headMot)
-                
                 
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
                 publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
                 publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
                 
-                #print("{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year))
-                #print("UTC Time {}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec))
-                #print("Valid date:{}\nValid Time:{}".format(gps_time.valid.validDate, gps_time.valid.validTime))
-                
-                
+                Roll = veh.roll
+                Pitch = veh.pitch
+                Heading = veh.heading
+                AccRoll = veh.accRoll
+                AccPitch = veh.accPitch
+                AccHeading = veh.accHeading
                 publish(client,'/visi/amantronic/rs/veh/roll',veh.roll)
                 publish(client,'/visi/amantronic/rs/veh/pitch',veh.pitch)
                 publish(client,'/visi/amantronic/rs/veh/heading',veh.heading)
@@ -69,12 +83,11 @@ def getGPS():
                 publish(client,'/visi/amantronic/rs/veh/accPitch',veh.accPitch)
                 publish(client,'/visi/amantronic/rs/veh/accHeading',veh.accHeading)
                 
-                #print("Roll: ", veh.roll)
-                #print("Pitch: ", veh.pitch)
-                #print("Heading: ", veh.heading)
-                #print("Roll Acceleration: ", veh.accRoll)
-                #print("Pitch Acceleration: ", veh.accPitch)
-                #print("Heading Acceleration: ", veh.accHeading)
+                Dataset = [Longitude,Latitude,HeadingOfMotion,GPS_Time,UTC_Time,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
+                
+                if StartLog = '1':
+                    with open(LogFilename, 'a') as f:
+                        f.write('\n'.join(Dataset))
                 
             except (ValueError, IOError) as err:
                 print(err)
@@ -86,6 +99,4 @@ def getGPS():
 if __name__ == '__main__':
     print("Connecting to MQTT Broker '{broker}'")
     client = connect_mqtt()
-    print("Starting client loop")
-    client.loop_start()
     getGPS()

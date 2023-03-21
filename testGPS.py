@@ -12,7 +12,7 @@ client_id = f'amantronic-01'
 #username = 'amantronic'
 #password = 'amantronic@1234'
 
-StartLog = '1'
+StartLog = '0'
 LogFilename = "/home/amantronic/testFile.txt"
 BrokerConnected = False
 
@@ -42,7 +42,7 @@ def connect_mqtt():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker, port)
-    client.loop_start
+    client.loop_start()
     client.subscribe("/visi/amantronic/rs/command/startLog")
     client.subscribe("/visi/amantronic/rs/command/filename")
     return client

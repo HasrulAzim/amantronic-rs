@@ -38,8 +38,10 @@ def on_message(client, userdata, message):
     print("message topic=",message.topic)
     if message.topic == "/visi/amantronic/rs/command/startLog":
         StartLog = str(message.payload.decode("utf-8"))
+        print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":
         LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
+        print(LogFilename)
         
 def publish(client, topic, msg):
     result = client.publish(topic, msg)
@@ -87,7 +89,8 @@ def getGPS():
                 
                 if StartLog = '1':
                     with open(LogFilename, 'a') as f:
-                        f.write('\n'.join(Dataset))
+                        f.write(','.join(Dataset))
+                        f.write('\n')
                 
             except (ValueError, IOError) as err:
                 print(err)

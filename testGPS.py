@@ -41,10 +41,6 @@ def connect_mqtt():
     client.subscribe("/visi/amantronic/rs/command/startLog")
     client.subscribe("/visi/amantronic/rs/command/filename")
     return client
-
-
-            
-
         
 def publish(client, topic, msg):
     result = client.publish(topic, msg)

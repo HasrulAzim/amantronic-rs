@@ -14,13 +14,17 @@ client_id = f'amantronic-01'
 
 StartLog = '0'
 LogFilename = ''
+BrokerConnected = False
+
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
+        BrokerConnected = True
         print("Connected to MQTT Broker!")
     else:
+        BrokerConnected = False
         print("Failed to connect, return code %d\n", rc)
-        
+    
 def on_message(client, userdata, message):
     print("message topic=",message.topic)
     if message.topic == "/visi/amantronic/rs/command/startLog":
@@ -29,7 +33,7 @@ def on_message(client, userdata, message):
     elif message.topic == "/visi/amantronic/rs/command/filename":
         LogFilename = "home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
         print(LogFilename)
-        
+    
 def connect_mqtt():
     
     # Set Connecting Client ID
@@ -38,7 +42,9 @@ def connect_mqtt():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker, port)
-
+    client.subscribe("/visi/amantronic/rs/command/startLog")
+    client.subscribe("/visi/amantronic/rs/command/filename")
+    client.loop_start
     return client
         
 def publish(client, topic, msg):
@@ -52,7 +58,6 @@ def publish(client, topic, msg):
 
 def getGPS():
     try:
-        print("Listening for UBX Messages")
         while True:
             try:
                 geo = gps.geo_coords()
@@ -100,7 +105,5 @@ def getGPS():
 if __name__ == '__main__':
     print("Connecting to MQTT Broker '{broker}'")
     client = connect_mqtt()
-    client.subscribe("/visi/amantronic/rs/command/startLog")
-    client.subscribe("/visi/amantronic/rs/command/filename")
-    client.loop_start
     getGPS()
+    

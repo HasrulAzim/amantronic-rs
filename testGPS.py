@@ -38,15 +38,14 @@ def connect_mqtt():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(broker, port)
-    client.subscribe("/visi/amantronic/rs/command/startLog")
-    client.subscribe("/visi/amantronic/rs/command/filename")
+
     return client
         
 def publish(client, topic, msg):
     result = client.publish(topic, msg)
     status = result[0]
     if status == 0:
-        print(f"Send `{msg}` to topic `{topic}`")
+#        print(f"Send `{msg}` to topic `{topic}`")
     else:
         print(f"Failed to send message to topic {topic}")
     return result
@@ -101,5 +100,7 @@ def getGPS():
 if __name__ == '__main__':
     print("Connecting to MQTT Broker '{broker}'")
     client = connect_mqtt()
-    client.loop_forever
+    client.subscribe("/visi/amantronic/rs/command/startLog")
+    client.subscribe("/visi/amantronic/rs/command/filename")
+    client.loop_start
     getGPS()

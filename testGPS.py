@@ -52,8 +52,8 @@ def publish(client, topic, msg):
     result = client.publish(topic, msg)
     status = result[0]
     if status == 0:
-        pass
-        #print(f"Send `{msg}` to topic `{topic}`")
+        #pass
+        print(f"Send `{msg}` to topic `{topic}`")
     else:
         print(f"Failed to send message to topic {topic}")
     return result
@@ -70,7 +70,7 @@ def getGPS():
                 
                 Longitude = str(geo.lon).format('.6f')
                 Latitude = str(geo.lat).format('.6f')
-                HeadingOfMotion = str(geo.headMot).format('.1f')
+                HeadingOfMotion = str(geo.headMot).format('.5f')
                 
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
@@ -78,22 +78,22 @@ def getGPS():
                 Roll = str(veh.roll).format('.1f')
                 Pitch = str(veh.pitch).format('.1f')
                 Heading = str(veh.heading).format('.1f')
-                AccRoll = str(veh.accRoll)
-                AccPitch = str(veh.accPitch)
-                AccHeading = str(veh.accHeading).format('.6f')
+                AccRoll = str(veh.accRoll).format('.5f')
+                AccPitch = str(veh.accPitch).format('.5f')
+                AccHeading = str(veh.accHeading).format('.5f')
                 
                 print("Transmitting data to broker...")
-                publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
-                publish(client,'/visi/amantronic/rs/geo/lat',geo.lat)
-                publish(client,'/visi/amantronic/rs/geo/headMot',geo.headMot)
+                publish(client,'/visi/amantronic/rs/geo/lon',Longitude)
+                publish(client,'/visi/amantronic/rs/geo/lat',Latitude)
+                publish(client,'/visi/amantronic/rs/geo/headMot',HeadingOfMotion)
                 publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
                 publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
-                publish(client,'/visi/amantronic/rs/veh/roll',veh.roll)
-                publish(client,'/visi/amantronic/rs/veh/pitch',veh.pitch)
-                publish(client,'/visi/amantronic/rs/veh/heading',veh.heading)
-                publish(client,'/visi/amantronic/rs/veh/accRoll',veh.accRoll)
-                publish(client,'/visi/amantronic/rs/veh/accPitch',veh.accPitch)
-                publish(client,'/visi/amantronic/rs/veh/accHeading',veh.accHeading)
+                publish(client,'/visi/amantronic/rs/veh/roll',Roll)
+                publish(client,'/visi/amantronic/rs/veh/pitch',Pitch)
+                publish(client,'/visi/amantronic/rs/veh/heading',Heading)
+                publish(client,'/visi/amantronic/rs/veh/accRoll',AccRoll)
+                publish(client,'/visi/amantronic/rs/veh/accPitch',AccPitch)
+                publish(client,'/visi/amantronic/rs/veh/accHeading',AccHeading)
                 
                 Dataset = [GPS_Time,UTC_Time,Longitude,Latitude,HeadingOfMotion,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
                 

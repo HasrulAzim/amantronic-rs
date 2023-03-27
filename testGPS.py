@@ -18,6 +18,7 @@ BrokerConnected = False
 
 
 def on_connect(client, userdata, flags, rc):
+    global BrokerConnected
     if rc == 0:
         BrokerConnected = True
         print("Connected to MQTT Broker!")
@@ -26,17 +27,13 @@ def on_connect(client, userdata, flags, rc):
         print("Failed to connect, return code %d\n", rc)
     
 def on_message(client, userdata, message):
+    global StartLog
+    global LogFilename
     print("message topic=",message.topic)
     if message.topic == "/visi/amantronic/rs/command/startLog":
         StartLog = str(message.payload.decode("utf-8")) 
-        if StartLog == '1':
-            print("Start Logging")
-        else:
-            print("Stop Log")
-        #print(StartLog)
     elif message.topic == "/visi/amantronic/rs/command/filename":
         LogFilename = "/home/amantronic/" + str(message.payload.decode("utf-8")) + ".txt"
-        print(LogFilename)
     
 def connect_mqtt():
     
@@ -55,13 +52,14 @@ def publish(client, topic, msg):
     result = client.publish(topic, msg)
     status = result[0]
     if status == 0:
-        print(".")
  #       print(f"Send `{msg}` to topic `{topic}`")
     else:
         print(f"Failed to send message to topic {topic}")
     return result
 
 def getGPS():
+    global StartLog
+    global LogFilename
     try:
         while True:
             try:
@@ -106,7 +104,6 @@ def getGPS():
 
     finally:
         port.close()
-
 
 if __name__ == '__main__':
     print("Connecting to MQTT Broker '{broker}'")

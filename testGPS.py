@@ -68,9 +68,9 @@ def getGPS():
                 gps_time = gps.date_time()
                 veh = gps.veh_attitude()
                 
-                Longitude = str(geo.lon).format('.6f')
-                Latitude = str(geo.lat).format('.6f')
-                HeadingOfMotion = str(geo.headMot).format('.5f')
+                Longitude = "{:.6f}".format(geo.lon)
+                Latitude = "{:.6f}".format(geo.lat)
+                HeadingOfMotion = "{:.5f}".format(geo.headMot)
                 
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)

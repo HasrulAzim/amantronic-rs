@@ -67,17 +67,13 @@ def getGPS():
                 geo = gps.geo_coords()
                 gps_time = gps.date_time()
                 veh = gps.veh_attitude()
+                
                 Longitude = str(geo.lon)
                 Latitude = str(geo.lat)
                 HeadingOfMotion = str(geo.headMot)
-                publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
-                publish(client,'/visi/amantronic/rs/geo/lat',geo.lat)
-                publish(client,'/visi/amantronic/rs/geo/headMot',geo.headMot)
                 
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
-                publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
-                publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
                 
                 Roll = str(veh.roll)
                 Pitch = str(veh.pitch)
@@ -85,6 +81,13 @@ def getGPS():
                 AccRoll = str(veh.accRoll)
                 AccPitch = str(veh.accPitch)
                 AccHeading = str(veh.accHeading)
+                
+                print("Transmitting data to broker...")
+                publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
+                publish(client,'/visi/amantronic/rs/geo/lat',geo.lat)
+                publish(client,'/visi/amantronic/rs/geo/headMot',geo.headMot)
+                publish(client,'/visi/amantronic/rs/time/gps',GPS_Time)
+                publish(client,'/visi/amantronic/rs/time/utc',UTC_Time)
                 publish(client,'/visi/amantronic/rs/veh/roll',veh.roll)
                 publish(client,'/visi/amantronic/rs/veh/pitch',veh.pitch)
                 publish(client,'/visi/amantronic/rs/veh/heading',veh.heading)

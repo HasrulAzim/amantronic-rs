@@ -52,8 +52,8 @@ def publish(client, topic, msg):
     result = client.publish(topic, msg)
     status = result[0]
     if status == 0:
-        #pass
-        print(f"Send `{msg}` to topic `{topic}`")
+        pass
+        #print(f"Send `{msg}` to topic `{topic}`")
     else:
         print(f"Failed to send message to topic {topic}")
     return result
@@ -98,7 +98,7 @@ def getGPS():
                 Dataset = [GPS_Time,UTC_Time,Longitude,Latitude,HeadingOfMotion,Roll,Pitch,Heading,AccRoll,AccPitch,AccHeading]
                 
                 if StartLog == '1':
-                    #print("Writing to log file "+LogFilename+".txt")
+                    print("Writing to log file "+LogFilename+".txt")
                     with open(LogFilename, 'a') as f:
                         f.write(','.join(Dataset))
                         f.write('\n')

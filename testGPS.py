@@ -75,12 +75,12 @@ def getGPS():
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
                 
-                Roll = str(veh.roll).format('.1f')
-                Pitch = str(veh.pitch).format('.1f')
-                Heading = str(veh.heading).format('.1f')
-                AccRoll = str(veh.accRoll).format('.5f')
-                AccPitch = str(veh.accPitch).format('.5f')
-                AccHeading = str(veh.accHeading).format('.5f')
+                Roll = "{:.1f}".format(veh.roll)
+                Pitch = "{:.1f}".format(veh.pitch)
+                Heading = "{:.1f}".format(veh.heading)
+                AccRoll = "{:.5f}".format(veh.accRoll)
+                AccPitch = "{:.5f}".format(veh.accPitch)
+                AccHeading = "{:.5f}".format(veh.accHeading)
                 
                 print("Transmitting data to broker...")
                 publish(client,'/visi/amantronic/rs/geo/lon',Longitude)

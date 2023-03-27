@@ -68,19 +68,19 @@ def getGPS():
                 gps_time = gps.date_time()
                 veh = gps.veh_attitude()
                 
-                Longitude = str(geo.lon)
-                Latitude = str(geo.lat)
-                HeadingOfMotion = str(geo.headMot)
+                Longitude = str(geo.lon).format('.6f')
+                Latitude = str(geo.lat).format('.6f')
+                HeadingOfMotion = str(geo.headMot).format('.1f')
                 
                 GPS_Time = "{}/{}/{}".format(gps_time.day, gps_time.month, gps_time.year)
                 UTC_Time = "{}:{}:{}".format(gps_time.hour, gps_time.min, gps_time.sec)
                 
-                Roll = str(veh.roll)
-                Pitch = str(veh.pitch)
-                Heading = str(veh.heading)
+                Roll = str(veh.roll).format('.1f')
+                Pitch = str(veh.pitch).format('.1f')
+                Heading = str(veh.heading).format('.1f')
                 AccRoll = str(veh.accRoll)
                 AccPitch = str(veh.accPitch)
-                AccHeading = str(veh.accHeading)
+                AccHeading = str(veh.accHeading).format('.6f')
                 
                 print("Transmitting data to broker...")
                 publish(client,'/visi/amantronic/rs/geo/lon',geo.lon)
